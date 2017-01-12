@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SimonGame</string>
+    <string name="startGameButton">New game</string>
+    <string name="highscore">Highscore</string>
+    <string name="about_us">About us</string>
+    <string name="HeadTitle">Simon game</string>
 </resources>
