@@ -11,6 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static nl.rubenrutten.simongame.SimonGameState.EXPECT_INPUT;
+import static nl.rubenrutten.simongame.SimonGameState.GAME_OVER;
 import static nl.rubenrutten.simongame.SimonGameState.HIGHLIGHTING;
 import static nl.rubenrutten.simongame.SimonGameState.IDLE;
 
@@ -42,7 +43,11 @@ public class SimonGame {
     }
 
     public void start() {
-        newRound();
+        if(gameState == IDLE) {
+            reset();
+
+            newRound();
+        }
     }
 
     public void newRound() {
@@ -94,9 +99,15 @@ public class SimonGame {
 
     public void stop() {
         if(gameState == HIGHLIGHTING || gameState == EXPECT_INPUT) {
-            timer.cancel();
-            listener.onGameOver("quit");
+            setState(GAME_OVER, "quit");
         }
+    }
+
+    public void reset() {
+        sequence.clear();
+        currentIndex = 0;
+        score = 0;
+        gameState = IDLE;
     }
 
     public void hit(int input) {
