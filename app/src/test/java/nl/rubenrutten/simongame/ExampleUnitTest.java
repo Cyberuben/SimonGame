@@ -1,4 +1,4 @@
-package erco.myfirstandroidgame;
+package nl.rubenrutten.simongame;
 
 import org.junit.Test;
 
