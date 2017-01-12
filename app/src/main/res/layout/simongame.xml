@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tableLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/AppTheme">
+
+    <TableRow
+
+        android:id="@+id/tableRow1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4" >
+
+        <Button
+            android:id="@+id/green"
+            android:color="@color/buttonGreen"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/green_button"
+            android:layout_margin="10dp"
+            />
+
+        <Button
+            android:id="@+id/red"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@drawable/red_button" />
+
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow2"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4" >
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:id="@+id/blue"
+            android:layout_margin="10dp"
+            android:background="@drawable/blue_button" />
+
+        <Button
+            android:id="@+id/yellow"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@drawable/yellow_button" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_gravity="center"
+           android:layout_weight="2"
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:textSize="30sp"
+            android:textStyle="normal|bold"
+            android:textAlignment="center" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="stop"
+            android:textSize="36sp"
+            android:background="@android:color/holo_red_light" />
+
+    </TableRow>
+
+</TableLayout>
