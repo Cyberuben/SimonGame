@@ -38,8 +38,6 @@ public class SimonGame {
     SimonGame(SimonListener a_listener) {
         listener = a_listener;
         gameState = IDLE;
-
-        timeoutTask = new TimeoutTask(this);
     }
 
     public void start() {
@@ -52,7 +50,7 @@ public class SimonGame {
 
     public void newRound() {
         currentIndex = 0;
-        sequence.add((int)Math.round(Math.random() * 4));
+        sequence.add((int)Math.floor(Math.random() * 4));
 
         gameState = HIGHLIGHTING;
 
@@ -71,11 +69,12 @@ public class SimonGame {
         switch(gameState) {
             case EXPECT_INPUT:
                 listener.onExpectInput();
+                timeoutTask = new TimeoutTask(this);
                 timer.schedule(timeoutTask, timeoutLength);
                 break;
             case GAME_OVER:
                 listener.onGameOver(reason);
-                timer.cancel();
+                timeoutTask.cancel();
                 break;
             default:
                 Log.w("SimonGame", "Not implemented state");
@@ -84,9 +83,11 @@ public class SimonGame {
     }
 
     public void highlightNextButton(int index) {
-        TimerTask highlightNext = new HighlightTask(index, this);
+        if(gameState == HIGHLIGHTING) {
+            TimerTask highlightNext = new HighlightTask(index, this);
 
-        timer.schedule(highlightNext, 1000);
+            timer.schedule(highlightNext, 1000);
+        }
     }
 
     public SimonListener getListener() {
@@ -99,6 +100,7 @@ public class SimonGame {
 
     public void stop() {
         if(gameState == HIGHLIGHTING || gameState == EXPECT_INPUT) {
+            timeoutTask.cancel();
             setState(GAME_OVER, "quit");
         }
     }
@@ -111,14 +113,19 @@ public class SimonGame {
     }
 
     public void hit(int input) {
-        timer.cancel();
+
         if(sequence.get(currentIndex) == input) {
             currentIndex++;
             score += currentIndex;
 
             if(currentIndex == sequence.size()) {
+                timeoutTask.cancel();
+                timer.purge();
                 newRound();
             }else{
+                timeoutTask.cancel();
+                timer.purge();
+                timeoutTask = new TimeoutTask(this);
                 timer.schedule(timeoutTask, timeoutLength);
             }
 
