@@ -2,6 +2,7 @@ package nl.rubenrutten.simongame;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,22 +20,31 @@ public class MainActivity extends AppCompatActivity {
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DialogTheme);
 
-                //Setting dialog title
-                alertDialog.setTitle("About us");
-
-                //Setting dialog message
-                alertDialog.setMessage("Ruben Rutten: developer" + "\n" + "Antonie de Waele: developer");
-                
-                //setting OK button
-                alertDialog.setButton("OK", new DialogInterface.OnClickListener(){
+                builder.setPositiveButton("Close", new DialogInterface.OnClickListener(){
+                    @Override
                     public void onClick(DialogInterface dialog, int which){
                         //Show text after dialog closed
                         Toast.makeText(getApplicationContext(),"Have fun playing", Toast.LENGTH_SHORT).show();
                     }
                 });
+
+                builder.setMessage("Ruben Rutten: developer\nAntonie de Waele: developer");
+                builder.setTitle("About us");
+                
+                //setting OK button
+                AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+            }
+        });
+
+        Button startButton = (Button) findViewById(R.id.startGame);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), GameActivity.class);
+                startActivity(i);
             }
         });
     }
