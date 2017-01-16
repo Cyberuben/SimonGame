@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Highscore score = new Highscore();
+
                 AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
 
                 //Setting dialog title
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Setting dialog message
                 alertDialog.setMessage("Ruben Rutten: developer" + "\n" + "Antonie de Waele: developer");
-                
+
                 //setting OK button
                 alertDialog.setButton("OK", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which){
