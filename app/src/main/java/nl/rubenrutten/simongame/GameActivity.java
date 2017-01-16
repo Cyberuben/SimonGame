@@ -1,5 +1,8 @@
 package nl.rubenrutten.simongame;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -19,10 +23,12 @@ public class GameActivity extends AppCompatActivity {
     private SimonListener listener;
 
     private Button[] buttons;
+    private Button stopButton;
     private TextView bottomText;
 
     private int round;
     private int highlitButton;
+    private String gameoverReason;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,8 @@ public class GameActivity extends AppCompatActivity {
         buttons[3] = (Button)findViewById(R.id.yellow);
 
         bottomText = (TextView)findViewById(R.id.bottomText);
+
+        stopButton = (Button)findViewById(R.id.stop);
 
         for(int i = 0; i < 4; i++) {
             buttons[i].setClickable(false);
@@ -67,6 +75,13 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 simonGame.hit(3);
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                simonGame.stop();
             }
         });
 
@@ -128,8 +143,47 @@ public class GameActivity extends AppCompatActivity {
             }
 
             public void onGameOver(String reason) {
-                // Show dialog
-                Log.i("GameActivity", reason);
+                gameoverReason = reason;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.DialogTheme);
+
+                        builder.setPositiveButton("Main menu",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick (DialogInterface dialog,int which){
+                                finish();
+                            }
+                        });
+
+                        builder.setNegativeButton("Try again",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick (DialogInterface dialog,int which){
+                            simonGame.reset();
+                            simonGame.start();
+                            }
+                        });
+
+                        switch(gameoverReason) {
+                            case "quit":
+                                builder.setMessage(getString(R.string.gameoverQuit));
+                                break;
+                            case "wrong":
+                                builder.setMessage(getString(R.string.gameoverWrong));
+                                break;
+                            case "timeout":
+                                builder.setMessage(getString(R.string.gameoverTimeout));
+                                break;
+                        }
+
+                        builder.setTitle(getString(R.string.gameoverTitle));
+
+                        //setting OK button
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    }
+                });
             }
         };
 

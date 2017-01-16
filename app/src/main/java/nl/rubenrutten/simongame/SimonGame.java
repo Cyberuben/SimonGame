@@ -100,6 +100,7 @@ public class SimonGame {
 
     public void stop() {
         if(gameState == HIGHLIGHTING || gameState == EXPECT_INPUT) {
+            timeoutTask.cancel();
             setState(GAME_OVER, "quit");
         }
     }

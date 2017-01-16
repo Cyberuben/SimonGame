@@ -4,4 +4,9 @@
     <string name="highscore">Highscore</string>
     <string name="about_us">About us</string>
     <string name="HeadTitle">Simon game</string>
+    <string name="roundNumber" formatted="false">Round #%d</string>
+    <string name="gameoverTitle">Game over!</string>
+    <string name="gameoverQuit">You quit the game.</string>
+    <string name="gameoverTimeout">You took too long to respond!</string>
+    <string name="gameoverWrong">You pressed the wrong button!</string>
 </resources>
