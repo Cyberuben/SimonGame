@@ -9,6 +9,8 @@ import android.util.Log;
 
 import java.util.Date;
 
+import static android.icu.text.MessagePattern.ArgType.SELECT;
+
 /**
  * Created by anton on 13-1-2017.
  */
@@ -18,17 +20,19 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
     private static final String TAG = "HighscoreDBHandler";
 
     private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "highscore.db";
-    private static final String DB_TABLE_NAME = "highscore";
+    private static final String DB_NAME = "highscore_layout.db";
+    private static final String DB_TABLE_NAME = "highscore_layout";
 
     private static final String COLOMN_ID = "_id";
     private static final String COLOMN_NAME = "name";
     private static final String COLOMN_SCORE = "score";
     private static final String COLOMN_DATE = "date";
 
-    public HighscoreDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DB_NAME, factory, DB_VERSION);
+
+    public HighscoreDBHandler(Context context) {
+        super(context, DB_NAME, null, DB_VERSION);
     }
+
 
     public void onCreate(SQLiteDatabase db) {
         String CREATE_HIGHSCORE_TABLE = "CREATE TABLE " + DB_TABLE_NAME +
@@ -36,7 +40,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
                 COLOMN_ID + " INTEGER PRIMARY KEY," +
                 COLOMN_NAME + " TEXT, " +
                 COLOMN_SCORE + " INTEGER, " +
-                COLOMN_DATE + " DATE " +
+                COLOMN_DATE + " TEXT " +
                 ")";
         db.execSQL(CREATE_HIGHSCORE_TABLE);
     }
@@ -55,16 +59,18 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(DB_TABLE_NAME, null, values);
+
         db.close();
     }
+    //heeft nog aanpassing nodig
+    public Cursor getHighscore() {
 
     public void getHighscore(String name, int score, Date date) {
+        String query_all = "SELECT *  FROM " + DB_TABLE_NAME;
 
-        String query_highscore = "SELECT * FROM " + DB_TABLE_NAME + " ORDER BY " +
-                COLOMN_SCORE + "DESC LIMIt" + "=" + 10;
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query_highscore, null);
+        Cursor cursor = db.rawQuery(query_all, null);
 
         cursor.moveToFirst();
         while (cursor.moveToFirst()) {
@@ -72,7 +78,6 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
             Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_SCORE)));
             Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_DATE)));
         }
-
-        db.close();
+        return cursor;
     }
 }
