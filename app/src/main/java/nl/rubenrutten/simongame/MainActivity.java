@@ -24,17 +24,17 @@ public class MainActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DialogTheme);
 
-                builder.setPositiveButton("Close", new DialogInterface.OnClickListener(){
+                builder.setPositiveButton(getString(R.string.close), new DialogInterface.OnClickListener(){
                     @Override
 
                     public void onClick(DialogInterface dialog, int which){
                         //Show text after dialog closed
-                        Toast.makeText(getApplicationContext(),"Have fun playing", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.haveFun), Toast.LENGTH_SHORT).show();
                     }
                 });
 
-                builder.setMessage("Ruben Rutten: developer\nAntonie de Waele: developer");
-                builder.setTitle("About us");
+                builder.setMessage(getString(R.string.developerInfo));
+                builder.setTitle(getString(R.string.about_us));
                 
                 //setting OK button
                 AlertDialog alertDialog = builder.create();

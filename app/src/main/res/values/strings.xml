@@ -4,9 +4,17 @@
     <string name="highscore">Highscore</string>
     <string name="about_us">About us</string>
     <string name="HeadTitle">Simon game</string>
-    <string name="roundNumber" formatted="false">Round #%d</string>
+    <string name="roundNumber" formatted="false">ROUND #%d</string>
+    <string name="scoreText" formatted="false">Score: %,d</string>
     <string name="gameoverTitle">Game over!</string>
     <string name="gameoverQuit">You quit the game.</string>
     <string name="gameoverTimeout">You took too long to respond!</string>
     <string name="gameoverWrong">You pressed the wrong button!</string>
+    <string name="noHighscores">There are no highscores to be shown yet!</string>
+    <string name="close">Close</string>
+    <string name="haveFun">Have fun playing</string>
+    <string name="developerInfo">Ruben Rutten: developer
+        Antonie de Waele: developer</string>
+    <string name="retry">Try again</string>
+    <string name="mainMenu">Main menu</string>
 </resources>

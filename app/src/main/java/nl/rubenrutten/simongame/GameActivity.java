@@ -30,6 +30,8 @@ public class GameActivity extends AppCompatActivity {
     private int highlitButton;
     private String gameoverReason;
 
+    private TextView scoreText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class GameActivity extends AppCompatActivity {
         buttons[3] = (Button)findViewById(R.id.yellow);
 
         bottomText = (TextView)findViewById(R.id.bottomText);
+        scoreText = (TextView)findViewById(R.id.scoreText);
 
         stopButton = (Button)findViewById(R.id.stop);
 
@@ -54,6 +57,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 simonGame.hit(0);
+                updateScore();
             }
         });
 
@@ -61,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 simonGame.hit(1);
+                updateScore();
             }
         });
 
@@ -68,6 +73,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 simonGame.hit(2);
+                updateScore();
             }
         });
 
@@ -75,6 +81,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 simonGame.hit(3);
+                updateScore();
             }
         });
 
@@ -90,16 +97,16 @@ public class GameActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // Set buttons to enabled
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                for(int i = 0; i < 4; i++) {
-                                    buttons[i].setClickable(true);
-                                }
+                    // Set buttons to enabled
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            for(int i = 0; i < 4; i++) {
+                                buttons[i].setClickable(true);
                             }
-                        }, 1000);
+                        }
+                    }, 1000);
                     }
                 });
             }
@@ -107,16 +114,18 @@ public class GameActivity extends AppCompatActivity {
             public void onNextRound(int _round) {
                 round = _round;
 
+                updateScore();
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // Disable buttons
-                        for(int i = 0; i < 4; i++) {
-                            buttons[i].setClickable(false);
-                        }
+                    // Disable buttons
+                    for(int i = 0; i < 4; i++) {
+                        buttons[i].setClickable(false);
+                    }
 
-                        // Set text at the bottom to round number
-                        bottomText.setText("ROUND #"+round);
+                    // Set text at the bottom to round number
+                    bottomText.setText(String.format(getString(R.string.roundNumber), round));
                     }
                 });
             }
@@ -127,17 +136,17 @@ public class GameActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // Highlight button
-                        buttons[highlitButton].setSelected(true);
+                    // Highlight button
+                    buttons[highlitButton].setSelected(true);
 
-                        // Remove the highlight after a few seconds
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                buttons[highlitButton].setSelected(false);
-                            }
-                        }, 750);
+                    // Remove the highlight after a few seconds
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            buttons[highlitButton].setSelected(false);
+                        }
+                    }, 750);
                     }
                 });
             }
@@ -148,40 +157,39 @@ public class GameActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.DialogTheme);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.DialogTheme);
 
-                        builder.setPositiveButton("Main menu",new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick (DialogInterface dialog,int which){
-                                finish();
-                            }
-                        });
-
-                        builder.setNegativeButton("Try again",new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick (DialogInterface dialog,int which){
-                            simonGame.reset();
-                            simonGame.start();
-                            }
-                        });
-
-                        switch(gameoverReason) {
-                            case "quit":
-                                builder.setMessage(getString(R.string.gameoverQuit));
-                                break;
-                            case "wrong":
-                                builder.setMessage(getString(R.string.gameoverWrong));
-                                break;
-                            case "timeout":
-                                builder.setMessage(getString(R.string.gameoverTimeout));
-                                break;
+                    builder.setPositiveButton(getString(R.string.mainMenu),new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick (DialogInterface dialog,int which){
+                            finish();
                         }
+                    });
 
-                        builder.setTitle(getString(R.string.gameoverTitle));
+                    builder.setNegativeButton(getString(R.string.retry),new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick (DialogInterface dialog,int which){
+                        simonGame.reset();
+                        simonGame.start();
+                        }
+                    });
 
-                        //setting OK button
-                        AlertDialog alertDialog = builder.create();
-                        alertDialog.show();
+                    switch(gameoverReason) {
+                        case "quit":
+                            builder.setMessage(getString(R.string.gameoverQuit));
+                            break;
+                        case "wrong":
+                            builder.setMessage(getString(R.string.gameoverWrong));
+                            break;
+                        case "timeout":
+                            builder.setMessage(getString(R.string.gameoverTimeout));
+                            break;
+                    }
+
+                    builder.setTitle(getString(R.string.gameoverTitle));
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
                     }
                 });
             }
@@ -190,5 +198,15 @@ public class GameActivity extends AppCompatActivity {
         simonGame = new SimonGame(listener);
 
         simonGame.start();
+    }
+
+    public void updateScore() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+            // Highlight button
+            scoreText.setText(String.format(getString(R.string.scoreText), simonGame.getScore()));
+            }
+        });
     }
 }

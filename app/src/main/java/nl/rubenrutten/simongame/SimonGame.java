@@ -134,5 +134,9 @@ public class SimonGame {
             listener.onGameOver("wrong");
         }
     }
+
+    public int getScore() {
+        return score;
+    }
 }
 

@@ -19,14 +19,14 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
 
     private static final String TAG = "HighscoreDBHandler";
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String DB_NAME = "highscore_layout.db";
     private static final String DB_TABLE_NAME = "highscore_layout";
 
-    private static final String COLOMN_ID = "_id";
-    private static final String COLOMN_NAME = "name";
-    private static final String COLOMN_SCORE = "score";
-    private static final String COLOMN_DATE = "date";
+    private static final String COLUMN_ID = "_id";
+    private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_SCORE = "score";
+    private static final String COLUMN_DATE = "date";
 
 
     public HighscoreDBHandler(Context context) {
@@ -37,39 +37,44 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_HIGHSCORE_TABLE = "CREATE TABLE " + DB_TABLE_NAME +
                 "(" +
-                COLOMN_ID + " INTEGER PRIMARY KEY," +
-                COLOMN_NAME + " TEXT, " +
-                COLOMN_SCORE + " INTEGER, " +
-                COLOMN_DATE + " TEXT " +
+                COLUMN_ID + " INTEGER PRIMARY KEY," +
+                COLUMN_NAME + " TEXT, " +
+                COLUMN_SCORE + " INTEGER, " +
+                COLUMN_DATE + " DATETIME " +
                 ")";
         db.execSQL(CREATE_HIGHSCORE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS" + DB_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DB_TABLE_NAME);
         onCreate(db);
     }
 
 
     public void addHighscore(Highscore highscore) {
         ContentValues values = new ContentValues();
-        values.put(COLOMN_NAME, highscore.getName());
-        values.put(COLOMN_SCORE, highscore.getScore());
-        values.put(COLOMN_DATE, highscore.getDate());
+        values.put(COLUMN_NAME, highscore.getName());
+        values.put(COLUMN_SCORE, highscore.getScore());
+        values.put(COLUMN_DATE, "NOW()");
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(DB_TABLE_NAME, null, values);
 
         db.close();
     }
+    
     //heeft nog aanpassing nodig
     public Cursor getHighscore() {
 
 //        String query_highscore = "SELECT * FROM " + DB_TABLE_NAME + " ORDER BY " +
-//                COLOMN_SCORE + "DESC LIMIt" + "=" + 10;
+//                COLOMN_SCORE + "DESC LIMIT 10";
 
-        String query_all = "SELECT *  FROM " + DB_TABLE_NAME  ;
+        String query_all = "SELECT " +
+                COLUMN_NAME+ ", "+
+                COLUMN_SCORE+", "+
+                "strftime('%d-%m-%Y', "+COLUMN_DATE+") "+
+                "FROM " + DB_TABLE_NAME  ;
 
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -77,9 +82,9 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
 
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
-            Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_NAME)));
-            Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_SCORE)));
-            Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_DATE)));
+            Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLUMN_SCORE)));
+            Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLUMN_DATE)));
         }
         db.close();
         return cursor;

@@ -38,7 +38,7 @@ public class HighscoreList extends AppCompatActivity{
 
 
         if(data.getCount()== 0){
-            Toast.makeText(HighscoreList.this, "nothing in the database", Toast.LENGTH_LONG).show();
+            Toast.makeText(HighscoreList.this, getString(R.string.noHighscores), Toast.LENGTH_LONG).show();
         }
     }
 }
