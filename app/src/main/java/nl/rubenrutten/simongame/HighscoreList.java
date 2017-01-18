@@ -37,7 +37,7 @@ public class HighscoreList extends AppCompatActivity{
         listContent.setAdapter(highscoreAdapter);
 
 
-        if(data.getCount()== 0){
+        if(data.getCount() == 0){
             Toast.makeText(HighscoreList.this, getString(R.string.noHighscores), Toast.LENGTH_LONG).show();
         }
     }

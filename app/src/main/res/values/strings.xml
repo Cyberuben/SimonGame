@@ -17,4 +17,6 @@
         Antonie de Waele: developer</string>
     <string name="retry">Try again</string>
     <string name="mainMenu">Main menu</string>
+    <string name="enterYourName">If you want to submit your highscore, enter your name</string>
+    <string name="yourName">Your name</string>
 </resources>

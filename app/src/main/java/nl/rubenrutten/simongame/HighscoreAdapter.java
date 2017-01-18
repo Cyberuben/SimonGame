@@ -30,11 +30,8 @@ public class HighscoreAdapter extends CursorAdapter {
         TextView highscore = (TextView) view.findViewById(R.id.highscore);
         TextView date = (TextView) view.findViewById(R.id.date);
 
-
-
-
         player.setText(cursor.getString(cursor.getColumnIndex("name")));
-        highscore.setText(cursor.getString(cursor.getColumnIndex("score")));
+        highscore.setText(String.format("%,d", cursor.getInt(cursor.getColumnIndex("score"))));
         date.setText(cursor.getString(cursor.getColumnIndex("date")));
 
 

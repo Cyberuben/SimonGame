@@ -19,7 +19,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
 
     private static final String TAG = "HighscoreDBHandler";
 
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private static final String DB_NAME = "highscore_layout.db";
     private static final String DB_TABLE_NAME = "highscore_layout";
 
@@ -37,10 +37,10 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_HIGHSCORE_TABLE = "CREATE TABLE " + DB_TABLE_NAME +
                 "(" +
-                COLUMN_ID + " INTEGER PRIMARY KEY," +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_SCORE + " INTEGER, " +
-                COLUMN_DATE + " DATETIME " +
+                COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP " +
                 ")";
         db.execSQL(CREATE_HIGHSCORE_TABLE);
     }
@@ -63,7 +63,18 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
 
         db.close();
     }
-    
+
+    public void addHighscore(String name, int score) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, name);
+        values.put(COLUMN_SCORE, score);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(DB_TABLE_NAME, null, values);
+
+        db.close();
+    }
+
     //heeft nog aanpassing nodig
     public Cursor getHighscore() {
 
@@ -71,11 +82,12 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
 //                COLOMN_SCORE + "DESC LIMIT 10";
 
         String query_all = "SELECT " +
-                COLUMN_NAME+ ", "+
+                COLUMN_ID+", "+
+                COLUMN_NAME+", "+
                 COLUMN_SCORE+", "+
-                "strftime('%d-%m-%Y', "+COLUMN_DATE+") "+
-                "FROM " + DB_TABLE_NAME  ;
-
+                "strftime('%d-%m-%Y', "+COLUMN_DATE+") AS "+COLUMN_DATE+" "+
+                "FROM " + DB_TABLE_NAME+" "+
+                "ORDER BY "+COLUMN_SCORE+" DESC LIMIT "+100;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query_all, null);

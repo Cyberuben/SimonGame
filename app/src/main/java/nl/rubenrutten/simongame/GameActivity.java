@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ public class GameActivity extends AppCompatActivity {
     private String gameoverReason;
 
     private TextView scoreText;
+    private EditText highscoreName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,16 +100,16 @@ public class GameActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                    // Set buttons to enabled
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            for(int i = 0; i < 4; i++) {
-                                buttons[i].setClickable(true);
+                        // Set buttons to enabled
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                for(int i = 0; i < 4; i++) {
+                                    buttons[i].setClickable(true);
+                                }
                             }
-                        }
-                    }, 1000);
+                        }, 1000);
                     }
                 });
             }
@@ -119,13 +122,13 @@ public class GameActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                    // Disable buttons
-                    for(int i = 0; i < 4; i++) {
-                        buttons[i].setClickable(false);
-                    }
+                        // Disable buttons
+                        for(int i = 0; i < 4; i++) {
+                            buttons[i].setClickable(false);
+                        }
 
-                    // Set text at the bottom to round number
-                    bottomText.setText(String.format(getString(R.string.roundNumber), round));
+                        // Set text at the bottom to round number
+                        bottomText.setText(String.format(getString(R.string.roundNumber), round));
                     }
                 });
             }
@@ -136,17 +139,17 @@ public class GameActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                    // Highlight button
-                    buttons[highlitButton].setSelected(true);
+                        // Highlight button
+                        buttons[highlitButton].setSelected(true);
 
-                    // Remove the highlight after a few seconds
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            buttons[highlitButton].setSelected(false);
-                        }
-                    }, 750);
+                        // Remove the highlight after a few seconds
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                buttons[highlitButton].setSelected(false);
+                            }
+                        }, 750);
                     }
                 });
             }
@@ -157,39 +160,51 @@ public class GameActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.DialogTheme);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this, R.style.DialogTheme);
 
-                    builder.setPositiveButton(getString(R.string.mainMenu),new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick (DialogInterface dialog,int which){
-                            finish();
+                        LayoutInflater inflater = getLayoutInflater();
+                        View dialogView = inflater.inflate(R.layout.gameover_dialog, null);
+
+                        builder.setView(dialogView);
+
+                        builder.setTitle(getString(R.string.gameoverTitle));
+
+                        builder.setPositiveButton(getString(R.string.mainMenu),new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick (DialogInterface dialog,int which){
+                                submitHighscore();
+                                finish();
+                            }
+                        });
+
+                        builder.setNegativeButton(getString(R.string.retry),new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick (DialogInterface dialog,int which){
+                                simonGame.reset();
+                                simonGame.start();
+                                submitHighscore();
+                            }
+                        });
+
+                        AlertDialog alertDialog = builder.create();
+
+                        TextView gameoverReasonText = (TextView)dialogView.findViewById(R.id.gameoverReason);
+                        TextView scoreText = (TextView)dialogView.findViewById(R.id.score);
+                        scoreText.setText(String.format(getString(R.string.scoreText), simonGame.getScore()));
+                        highscoreName = (EditText)dialogView.findViewById(R.id.highscoreName);
+
+                        switch(gameoverReason) {
+                            case "quit":
+                                gameoverReasonText.setText(getString(R.string.gameoverQuit));
+                                break;
+                            case "wrong":
+                                gameoverReasonText.setText(getString(R.string.gameoverWrong));
+                                break;
+                            case "timeout":
+                                gameoverReasonText.setText(getString(R.string.gameoverTimeout));
+                                break;
                         }
-                    });
-
-                    builder.setNegativeButton(getString(R.string.retry),new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick (DialogInterface dialog,int which){
-                        simonGame.reset();
-                        simonGame.start();
-                        }
-                    });
-
-                    switch(gameoverReason) {
-                        case "quit":
-                            builder.setMessage(getString(R.string.gameoverQuit));
-                            break;
-                        case "wrong":
-                            builder.setMessage(getString(R.string.gameoverWrong));
-                            break;
-                        case "timeout":
-                            builder.setMessage(getString(R.string.gameoverTimeout));
-                            break;
-                    }
-
-                    builder.setTitle(getString(R.string.gameoverTitle));
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+                        alertDialog.show();
                     }
                 });
             }
@@ -204,9 +219,16 @@ public class GameActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-            // Highlight button
-            scoreText.setText(String.format(getString(R.string.scoreText), simonGame.getScore()));
+                // Highlight button
+                scoreText.setText(String.format(getString(R.string.scoreText), simonGame.getScore()));
             }
         });
+    }
+
+    public void submitHighscore() {
+        if(highscoreName.getText().length() > 0) {
+            HighscoreDBHandler highscores = new HighscoreDBHandler(getApplicationContext());
+            highscores.addHighscore(highscoreName.getText().toString(), simonGame.getScore());
+        }
     }
 }
