@@ -18,11 +18,9 @@ import static android.icu.text.MessagePattern.ArgType.SELECT;
 public class HighscoreDBHandler extends SQLiteOpenHelper {
 
     private static final String TAG = "HighscoreDBHandler";
-
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "highscore_layout.db";
     private static final String DB_TABLE_NAME = "highscore_layout";
-
     private static final String COLOMN_ID = "_id";
     private static final String COLOMN_NAME = "name";
     private static final String COLOMN_SCORE = "score";
@@ -33,7 +31,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-
+    //Create database
     public void onCreate(SQLiteDatabase db) {
         String CREATE_HIGHSCORE_TABLE = "CREATE TABLE " + DB_TABLE_NAME +
                 "(" +
@@ -51,7 +49,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-
+    //add highscore to database
     public void addHighscore(Highscore highscore) {
         ContentValues values = new ContentValues();
         values.put(COLOMN_NAME, highscore.getName());
@@ -63,14 +61,10 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
 
         db.close();
     }
-    //heeft nog aanpassing nodig
+    //Get highscore from database
     public Cursor getHighscore() {
 
-//        String query_highscore = "SELECT * FROM " + DB_TABLE_NAME + " ORDER BY " +
-//                COLOMN_SCORE + "DESC LIMIt" + "=" + 10;
-
         String query_all = "SELECT *  FROM " + DB_TABLE_NAME  ;
-
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query_all, null);
@@ -83,6 +77,5 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return cursor;
-
     }
 }

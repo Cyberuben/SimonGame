@@ -13,11 +13,20 @@ public class Highscore {
     private int score;
     private String date;
 
-    public String getName(){return name;}
-    public void setName(String name){this.name = name;}
+    public String getName(){
+        return name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
-    public int getScore(){return score;}
-    public void setScore(int score){this.score = score;}
+    public int getScore(){
+        return score;
+    }
+
+    public void setScore(int score){
+        this.score = score;
+    }
 
     public String getDate(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -27,6 +36,7 @@ public class Highscore {
     public void setDate(String date){this.date = date;}
 
     @Override
-    public String toString(){return "Highscore";}
-
+    public String toString(){
+        return "Highscore";
+    }
 }

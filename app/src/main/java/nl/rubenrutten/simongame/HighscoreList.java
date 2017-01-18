@@ -30,15 +30,14 @@ public class HighscoreList extends AppCompatActivity{
         ListView listContent = (ListView)findViewById(R.id.highscoreListview);
         myDB = new HighscoreDBHandler(this);
 
-        ArrayList<String> list = new ArrayList<>();
+        //set data from database in (custom)listview
         Cursor data = myDB.getHighscore();
-
         HighscoreAdapter highscoreAdapter = new HighscoreAdapter(this, data);
         listContent.setAdapter(highscoreAdapter);
 
-
+        //show message if database is empty
         if(data.getCount()== 0){
-            Toast.makeText(HighscoreList.this, "nothing in the database", Toast.LENGTH_LONG).show();
+            Toast.makeText(HighscoreList.this, "There are no highscores", Toast.LENGTH_LONG).show();
         }
     }
 }

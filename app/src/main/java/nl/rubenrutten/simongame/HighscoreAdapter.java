@@ -24,22 +24,14 @@ public class HighscoreAdapter extends CursorAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.highscorerow, viewGroup, false);
         return view;
     }
-
+    //bind textviews with listview
     public void bindView(View view, Context context, Cursor cursor){
         TextView player = (TextView) view.findViewById(R.id.player);
         TextView highscore = (TextView) view.findViewById(R.id.highscore);
         TextView date = (TextView) view.findViewById(R.id.date);
 
-
-
-
         player.setText(cursor.getString(cursor.getColumnIndex("name")));
         highscore.setText(cursor.getString(cursor.getColumnIndex("score")));
         date.setText(cursor.getString(cursor.getColumnIndex("date")));
-
-
-
     }
-
-
 }
