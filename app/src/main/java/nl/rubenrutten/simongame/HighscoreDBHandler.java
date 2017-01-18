@@ -51,6 +51,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+
     public void addHighscore(Highscore highscore) {
         ContentValues values = new ContentValues();
         values.put(COLOMN_NAME, highscore.getName());
@@ -65,19 +66,23 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
     //heeft nog aanpassing nodig
     public Cursor getHighscore() {
 
-    public void getHighscore(String name, int score, Date date) {
-        String query_all = "SELECT *  FROM " + DB_TABLE_NAME;
+//        String query_highscore = "SELECT * FROM " + DB_TABLE_NAME + " ORDER BY " +
+//                COLOMN_SCORE + "DESC LIMIt" + "=" + 10;
+
+        String query_all = "SELECT *  FROM " + DB_TABLE_NAME  ;
 
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query_all, null);
 
         cursor.moveToFirst();
-        while (cursor.moveToFirst()) {
+        while (cursor.moveToNext()) {
             Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_NAME)));
             Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_SCORE)));
             Log.i(TAG, cursor.getString(cursor.getColumnIndex(COLOMN_DATE)));
         }
+        db.close();
         return cursor;
+
     }
 }

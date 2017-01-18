@@ -33,21 +33,13 @@ public class HighscoreList extends AppCompatActivity{
         ArrayList<String> list = new ArrayList<>();
         Cursor data = myDB.getHighscore();
 
+        HighscoreAdapter highscoreAdapter = new HighscoreAdapter(this, data);
+        listContent.setAdapter(highscoreAdapter);
 
 
         if(data.getCount()== 0){
             Toast.makeText(HighscoreList.this, "nothing in the database", Toast.LENGTH_LONG).show();
         }
-        else{
-            while(data.moveToFirst()){
-
-                list.add(data.getString(1));
-                list.add(data.getString(2));
-
-                ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-                listContent.setAdapter(listAdapter);
-            }
-        }
-
     }
 }
+

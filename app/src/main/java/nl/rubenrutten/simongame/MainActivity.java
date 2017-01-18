@@ -17,28 +17,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button aboutButton = (Button) findViewById(R.id.aboutButton);
+
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
-                Highscore score = new Highscore();
 
-                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-
-                //Setting dialog title
-                alertDialog.setTitle("About us");
-
-                //Setting dialog message
-                alertDialog.setMessage("Ruben Rutten: developer" + "\n" + "Antonie de Waele: developer");
-
-                //setting OK button
-                alertDialog.setButton("OK", new DialogInterface.OnClickListener(){
-=======
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.DialogTheme);
 
                 builder.setPositiveButton("Close", new DialogInterface.OnClickListener(){
                     @Override
->>>>>>> origin/master
+
                     public void onClick(DialogInterface dialog, int which){
                         //Show text after dialog closed
                         Toast.makeText(getApplicationContext(),"Have fun playing", Toast.LENGTH_SHORT).show();
