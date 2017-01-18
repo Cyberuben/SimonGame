@@ -3,8 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:text="Highscores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+
+        android:textAlignment="center"
+        android:textStyle="normal|bold"
+        android:textSize="36sp"
+        android:textColor="@android:color/holo_blue_light"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:id="@+id/highscoreListview" />
 </LinearLayout>

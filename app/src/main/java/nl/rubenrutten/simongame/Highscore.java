@@ -1,5 +1,6 @@
 package nl.rubenrutten.simongame;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,7 +19,11 @@ public class Highscore {
     public int getScore(){return score;}
     public void setScore(int score){this.score = score;}
 
-    public String getDate(){return date;}
+    public String getDate(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
     public void setDate(String date){this.date = date;}
 
     @Override

@@ -56,7 +56,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLOMN_NAME, highscore.getName());
         values.put(COLOMN_SCORE, highscore.getScore());
-        values.put(COLOMN_DATE, highscore.getDate().toString());
+        values.put(COLOMN_DATE, highscore.getDate());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(DB_TABLE_NAME, null, values);

@@ -50,3 +50,4 @@ fabric.properties
 /build
 /captures
 .externalNativeBuild
+app/src/main/java/nl/rubenrutten/simongame/MainActivity.java
