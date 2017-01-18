@@ -13,8 +13,7 @@
     <string name="noHighscores">There are no highscores to be shown yet!</string>
     <string name="close">Close</string>
     <string name="haveFun">Have fun playing</string>
-    <string name="developerInfo">Ruben Rutten: developer
-        Antonie de Waele: developer</string>
+    <string name="developerInfo">Ruben Rutten: developer\nAntonie de Waele: developer</string>
     <string name="retry">Try again</string>
     <string name="mainMenu">Main menu</string>
     <string name="enterYourName">If you want to submit your highscore, enter your name</string>
