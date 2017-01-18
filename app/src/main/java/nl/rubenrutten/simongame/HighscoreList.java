@@ -30,12 +30,10 @@ public class HighscoreList extends AppCompatActivity{
         ListView listContent = (ListView)findViewById(R.id.highscoreListview);
         myDB = new HighscoreDBHandler(this);
 
-        ArrayList<String> list = new ArrayList<>();
+        //set data from database in (custom)listview
         Cursor data = myDB.getHighscore();
-
         HighscoreAdapter highscoreAdapter = new HighscoreAdapter(this, data);
         listContent.setAdapter(highscoreAdapter);
-
 
         if(data.getCount() == 0){
             Toast.makeText(HighscoreList.this, getString(R.string.noHighscores), Toast.LENGTH_LONG).show();

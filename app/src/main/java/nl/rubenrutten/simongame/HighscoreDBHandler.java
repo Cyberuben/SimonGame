@@ -33,7 +33,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-
+    //Create database
     public void onCreate(SQLiteDatabase db) {
         String CREATE_HIGHSCORE_TABLE = "CREATE TABLE " + DB_TABLE_NAME +
                 "(" +
@@ -62,12 +62,7 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //heeft nog aanpassing nodig
     public Cursor getHighscore() {
-
-//        String query_highscore = "SELECT * FROM " + DB_TABLE_NAME + " ORDER BY " +
-//                COLOMN_SCORE + "DESC LIMIT 10";
-
         String query_all = "SELECT " +
                 COLUMN_ID+", "+
                 COLUMN_NAME+", "+
@@ -75,7 +70,6 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
                 "strftime('%d-%m-%Y', "+COLUMN_DATE+") AS "+COLUMN_DATE+" "+
                 "FROM " + DB_TABLE_NAME+" "+
                 "ORDER BY "+COLUMN_SCORE+" DESC LIMIT "+100;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query_all, null);
 
@@ -87,6 +81,5 @@ public class HighscoreDBHandler extends SQLiteOpenHelper {
         }
         db.close();
         return cursor;
-
     }
 }
