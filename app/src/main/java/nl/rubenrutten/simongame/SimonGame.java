@@ -29,6 +29,8 @@ public class SimonGame {
     private int score = 0;
     private int timeoutLength = 10000;
     private int currentIndex = 0;
+
+    // TimeoutTask is the task that ends the game if the player didn't play fast enough
     private TimerTask timeoutTask;
 
     private SimonGameState gameState;
@@ -41,6 +43,7 @@ public class SimonGame {
     }
 
     public void start() {
+        // Only start a new game if there isn't currently a game being played
         if(gameState == IDLE) {
             reset();
 
@@ -49,6 +52,7 @@ public class SimonGame {
     }
 
     public void newRound() {
+        // Add new index to the sequence and start highlighting the buttons
         currentIndex = 0;
         sequence.add((int)Math.floor(Math.random() * 4));
 
@@ -64,6 +68,7 @@ public class SimonGame {
     }
 
     public void setState(SimonGameState _state, String reason) {
+        // Set the game state. In case of a game over, also set the reason.
         gameState = _state;
 
         switch(gameState) {
@@ -83,6 +88,8 @@ public class SimonGame {
     }
 
     public void highlightNextButton(int index) {
+        // Highlight a button only during the HIGHLIGHTING state (to prevent buttons from being
+        // highlit after a player stopped the game
         if(gameState == HIGHLIGHTING) {
             TimerTask highlightNext = new HighlightTask(index, this);
 
@@ -99,6 +106,7 @@ public class SimonGame {
     }
 
     public void stop() {
+        // Stop the game, only available when the game is actively being played
         if(gameState == HIGHLIGHTING || gameState == EXPECT_INPUT) {
             timeoutTask.cancel();
             setState(GAME_OVER, "quit");
@@ -106,6 +114,7 @@ public class SimonGame {
     }
 
     public void reset() {
+        // Reset function to make sure everything is set back to default values
         sequence.clear();
         currentIndex = 0;
         score = 0;
@@ -113,7 +122,7 @@ public class SimonGame {
     }
 
     public void hit(int input) {
-
+        // Register a hit of the player
         if(sequence.get(currentIndex) == input) {
             currentIndex++;
             score += currentIndex;

@@ -56,6 +56,7 @@ public class GameActivity extends AppCompatActivity {
             buttons[i].setClickable(false);
         }
 
+        // Trigger SimonGame to know a button was hit
         buttons[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +97,7 @@ public class GameActivity extends AppCompatActivity {
         });
 
         listener = new SimonListener() {
+            // Allow buttons to be pressed
             public void onExpectInput() {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -114,6 +116,7 @@ public class GameActivity extends AppCompatActivity {
                 });
             }
 
+            // Change round text and disable buttons for the highlighting stage
             public void onNextRound(int _round) {
                 round = _round;
 
@@ -133,6 +136,7 @@ public class GameActivity extends AppCompatActivity {
                 });
             }
 
+            // Highlight a specific button
             public void onHighlight(int input) {
                 highlitButton = input;
 
@@ -154,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
                 });
             }
 
+            // Show game over dialog with highscore name box
             public void onGameOver(String reason) {
                 gameoverReason = reason;
 
@@ -215,6 +220,7 @@ public class GameActivity extends AppCompatActivity {
         simonGame.start();
     }
 
+    // Update score text
     public void updateScore() {
         runOnUiThread(new Runnable() {
             @Override
@@ -225,6 +231,7 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    // Submit highscore on closing of the dialog, only when a name was entered
     public void submitHighscore() {
         if(highscoreName.getText().length() > 0) {
             HighscoreDBHandler highscores = new HighscoreDBHandler(getApplicationContext());
